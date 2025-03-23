@@ -29,4 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
     imageElement.src = character.image;
     voteCountElement.textContent = character.votes;
   }
+
+  votesForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (currentCharacter) {
+      const newVotes = parseInt(votesInput.value) || 0;
+      currentCharacter.votes += newVotes;
+      voteCountElement.textContent = currentCharacter.votes;
+      votesInput.value = "";
+    }
+  });
 });
