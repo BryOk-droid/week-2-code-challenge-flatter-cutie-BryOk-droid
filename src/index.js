@@ -22,4 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
         characterBar.appendChild(span);
       });
     });
+
+  function displayCharacter(character) {
+    currentCharacter = character;
+    nameElement.textContent = character.name;
+    imageElement.src = character.image;
+    voteCountElement.textContent = character.votes;
+  }
 });
