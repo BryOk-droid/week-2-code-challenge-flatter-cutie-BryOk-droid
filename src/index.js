@@ -39,4 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
       votesInput.value = "";
     }
   });
+
+  resetButton.addEventListener("click", () => {
+    if (currentCharacter) {
+      currentCharacter.votes = 0;
+      voteCountElement.textContent = "0";
+    }
+  });
 });
