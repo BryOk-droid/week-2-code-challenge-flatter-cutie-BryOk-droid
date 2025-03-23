@@ -46,4 +46,33 @@ document.addEventListener("DOMContentLoaded", () => {
       voteCountElement.textContent = "0";
     }
   });
+
+  const characterForm = document.getElementById("character-form");
+  if (characterForm) {
+    characterForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const newName = document.getElementById("name").value;
+      const newImage = document.getElementById("image-url").value;
+
+      if (newName && newImage) {
+        const newCharacter = { name: newName, image: newImage, votes: 0 };
+
+        fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newCharacter),
+        })
+          .then((response) => response.json())
+          .then((character) => {
+            const span = document.createElement("span");
+            span.textContent = character.name;
+            span.addEventListener("click", () => displayCharacter(character));
+            characterBar.appendChild(span);
+          });
+
+        // Clear form
+        characterForm.reset();
+      }
+    });
+  }
 });
