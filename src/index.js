@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const votesForm = document.getElementById("votes-form");
   const votesInput = document.getElementById("votes");
   const resetButton = document.getElementById("reset-btn");
-  const characterForm = document.getElementById("character-form");
 
   const API_URL = "http://localhost:3000/characters";
   let currentCharacter = null;
