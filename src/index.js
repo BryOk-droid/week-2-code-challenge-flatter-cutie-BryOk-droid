@@ -11,4 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const API_URL = "http://localhost:3000/characters";
   let currentCharacter = null;
+
+  fetch(API_URL)
+    .then((response) => response.json())
+    .then((characters) => {
+      characters.forEach((character) => {
+        const span = document.createElement("span");
+        span.textContent = character.name;
+        span.addEventListener("click", () => displayCharacter(character));
+        characterBar.appendChild(span);
+      });
+    });
 });
