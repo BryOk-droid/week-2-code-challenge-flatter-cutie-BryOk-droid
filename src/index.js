@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const votesForm = document.getElementById("votes-form");
   const votesInput = document.getElementById("votes");
   const resetButton = document.getElementById("reset-btn");
+  const characterForm = document.getElementById("character-form");
 
   const API_URL = "http://localhost:3000/characters";
   let currentCharacter = null;
@@ -33,20 +34,41 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     if (currentCharacter) {
       const newVotes = parseInt(votesInput.value) || 0;
-      currentCharacter.votes += newVotes;
-      voteCountElement.textContent = currentCharacter.votes;
-      votesInput.value = "";
+      const updatedVotes = currentCharacter.votes + newVotes;
+
+      fetch(`${API_URL}/${currentCharacter.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ votes: updatedVotes }),
+      })
+        .then((res) => res.json())
+        .then((updatedCharacter) => {
+          currentCharacter.votes = updatedCharacter.votes;
+          voteCountElement.textContent = updatedCharacter.votes;
+          votesInput.value = "";
+        });
     }
   });
 
   resetButton.addEventListener("click", () => {
     if (currentCharacter) {
-      currentCharacter.votes = 0;
-      voteCountElement.textContent = "0";
+      fetch(`${API_URL}/${currentCharacter.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ votes: 0 }),
+      })
+        .then((res) => res.json())
+        .then((updatedCharacter) => {
+          currentCharacter.votes = updatedCharacter.votes;
+          voteCountElement.textContent = updatedCharacter.votes;
+        });
     }
   });
 
-  const characterForm = document.getElementById("character-form");
   if (characterForm) {
     characterForm.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -67,9 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
             span.textContent = character.name;
             span.addEventListener("click", () => displayCharacter(character));
             characterBar.appendChild(span);
+
+            displayCharacter(character);
           });
 
-        // Clear form
         characterForm.reset();
       }
     });
